@@ -1,9 +1,13 @@
 <Solution>
-  <Project Path='Last Z Client-o-matic/Last Z Client-o-matic.csproj' />
-  <Project Path='LastZ Client-o-matic.UI/LastZ Client-o-matic.UI.csproj' Id='55cc70ff-775e-4c4d-b7ab-ba0990499729' />
-  <Project Path='Sbroenne.WindowsMcp/Sbroenne.WindowsMcp.csproj' />
-  <Project Path='WindowsMCP Integrated.Services/WindowsMCP Integrated.Services.csproj' />
-  <Project Path='WindowsMCP Integrated/WindowsMCP Integrated.csproj' Id='5b3070eb-a20c-401e-88dc-96282dbf93c0'>
-    <BuildDependency Project='Sbroenne.WindowsMcp/Sbroenne.WindowsMcp.csproj' />
+  <Folder Name="/Development Journey/">
+    <File Path="Journey/Abstract Command and first attempt at ImageProcessingCommand.md" />
+    <File Path="Journey/Refactor VSService into a class library for WinForms app.md" />
+  </Folder>
+  <Project Path="Last Z Client-o-matic/Last Z Client-o-matic.csproj" />
+  <Project Path="LastZ Client-o-matic.UI/LastZ Client-o-matic.UI.csproj" Id="55cc70ff-775e-4c4d-b7ab-ba0990499729" />
+  <Project Path="Sbroenne.WindowsMcp/Sbroenne.WindowsMcp.csproj" />
+  <Project Path="WindowsMCP Integrated.Services/WindowsMCP Integrated.Services.csproj" />
+  <Project Path="WindowsMCP Integrated/WindowsMCP Integrated.csproj" Id="5b3070eb-a20c-401e-88dc-96282dbf93c0">
+    <BuildDependency Project="Sbroenne.WindowsMcp/Sbroenne.WindowsMcp.csproj" />
   </Project>
 </Solution>
