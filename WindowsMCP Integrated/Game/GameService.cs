@@ -135,7 +135,7 @@ namespace WindowsMCP_Integrated
 
         internal async Task<bool> ScrollAndScreenshotTableAsync(ScrollableReadableTable table, string imageName, CancellationToken cancellationToken = default)
         {
-            for (int i = table.EstimatedPartitions-1; i <= table.EstimatedPartitions; i++)
+            for (int i = 0; i <= table.EstimatedPartitions; i++)
             {
                 cancellationToken.ThrowIfCancellationRequested();
                 var getss = await GetScreenshotAsync(
@@ -174,7 +174,7 @@ namespace WindowsMCP_Integrated
             return dragger.Success;
         }
 
-        internal async Task<bool> ClickPositionAndForgetAsync(System.Drawing.Point? point, bool antiDetect = false)
+        public async Task<bool> ClickPositionAndForgetAsync(System.Drawing.Point? point, bool antiDetect = false)
         {
             _logger.Trace($"Clicking mouse {point} with anti-detect at {antiDetect}");
             MouseControlResult? clickResult;

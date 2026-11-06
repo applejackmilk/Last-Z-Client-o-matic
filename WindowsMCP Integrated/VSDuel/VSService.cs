@@ -10,10 +10,9 @@ namespace WindowsMCP_Integrated.VSDuel
         private readonly GameService _gameService;
         private readonly VSElements _vsElements = new VSElements();
         private readonly ILogger _logger = NLog.LogManager.GetCurrentClassLogger();
-        public VSService(GameService gameService, VSElements vsElements)
+        public VSService(GameService gameService)
         {
             _gameService = gameService;
-            _vsElements = vsElements;
         }
         public async Task<bool> CaptureDailyVSRanking(int? dayIndex, CancellationToken cancellationToken = default)
         {

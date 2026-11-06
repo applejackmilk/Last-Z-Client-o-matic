@@ -14,7 +14,7 @@ namespace WindowsMCP_Integrated
             private async Task<int> DoRankingCapture(ParseResult parseResult, CancellationToken token)
             {
                 int? dayIndex = parseResult.GetValue(rankingOption);
-                var vsService = new VSDuel.VSService(gameService, new VSDuel.VSElements());
+                var vsService = new VSDuel.VSService(gameService);
                 var result = await vsService.CaptureDailyVSRanking(dayIndex, token);
                 return result ? 0 : 1;
             }

@@ -16,25 +16,6 @@ namespace WindowsMCP_Integrated
 
                 _logger.LogTrace($"Command {name} initialized with description: {description}");
             }
-
-            protected internal bool NullGuard(object o)
-            {
-                //ArgumentNullException.ThrowIfNull(o); make this configurable?
-                return o != null;
-            }
-
-            protected internal void CheckGameService()
-            {
-                this.Validators.Add(result =>
-                {
-                    if (!NullGuard(gameService))
-                    {
-                        result.AddError("Game service was not found");
-                    }
-                });
-
-            }
-
         }
     }
 

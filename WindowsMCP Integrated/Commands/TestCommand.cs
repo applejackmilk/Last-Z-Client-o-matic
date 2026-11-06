@@ -21,7 +21,7 @@ namespace WindowsMCP_Integrated
             private Argument<int?> test1IntArgument = new Argument<int?>("arg1-int");
             private async Task<int> DoTest1(ParseResult parseResult, CancellationToken token)
             {
-                var vsService = new VSService(gameService, new VSElements());
+                var vsService = new VSService(gameService);
                 var result = await vsService.CaptureDailyVSRanking(null, token);
                 return result ? 0 : 1;
             }

@@ -15,7 +15,7 @@ namespace WindowsMCP_Integrated
 
                 if( pr.GetValue(readVSRankingDay) is int dayIndex)
                 {
-                    var service = new VSDuel.VSService(gameService, new VSDuel.VSElements());
+                    var service = new VSDuel.VSService(gameService);
                     var result = await service.CaptureDailyVSRanking(dayIndex, token);
                     return result ? 0 : 1;
                 }

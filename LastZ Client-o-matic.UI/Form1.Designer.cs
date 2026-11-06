@@ -30,10 +30,13 @@
         {
             tabControl1 = new TabControl();
             tabPage1 = new TabPage();
-            tabPage2 = new TabPage();
+            numericUpDown1 = new NumericUpDown();
             button1 = new Button();
+            tabPage2 = new TabPage();
+            button2 = new Button();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numericUpDown1).BeginInit();
             SuspendLayout();
             // 
             // tabControl1
@@ -48,6 +51,8 @@
             // 
             // tabPage1
             // 
+            tabPage1.Controls.Add(button2);
+            tabPage1.Controls.Add(numericUpDown1);
             tabPage1.Controls.Add(button1);
             tabPage1.Location = new Point(4, 24);
             tabPage1.Name = "tabPage1";
@@ -57,15 +62,12 @@
             tabPage1.Text = "tabPage1";
             tabPage1.UseVisualStyleBackColor = true;
             // 
-            // tabPage2
+            // numericUpDown1
             // 
-            tabPage2.Location = new Point(4, 24);
-            tabPage2.Name = "tabPage2";
-            tabPage2.Padding = new Padding(3);
-            tabPage2.Size = new Size(192, 72);
-            tabPage2.TabIndex = 1;
-            tabPage2.Text = "tabPage2";
-            tabPage2.UseVisualStyleBackColor = true;
+            numericUpDown1.Location = new Point(8, 37);
+            numericUpDown1.Name = "numericUpDown1";
+            numericUpDown1.Size = new Size(120, 23);
+            numericUpDown1.TabIndex = 1;
             // 
             // button1
             // 
@@ -77,6 +79,26 @@
             button1.UseVisualStyleBackColor = true;
             button1.Click += button1_Click;
             // 
+            // tabPage2
+            // 
+            tabPage2.Location = new Point(4, 24);
+            tabPage2.Name = "tabPage2";
+            tabPage2.Padding = new Padding(3);
+            tabPage2.Size = new Size(375, 225);
+            tabPage2.TabIndex = 1;
+            tabPage2.Text = "tabPage2";
+            tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // button2
+            // 
+            button2.Location = new Point(89, 8);
+            button2.Name = "button2";
+            button2.Size = new Size(75, 23);
+            button2.TabIndex = 2;
+            button2.Text = "The Heli!";
+            button2.UseVisualStyleBackColor = true;
+            button2.Click += button2_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -87,6 +109,7 @@
             Text = "Form1";
             tabControl1.ResumeLayout(false);
             tabPage1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)numericUpDown1).EndInit();
             ResumeLayout(false);
         }
 
@@ -96,5 +119,7 @@
         private TabPage tabPage1;
         private Button button1;
         private TabPage tabPage2;
+        private NumericUpDown numericUpDown1;
+        private Button button2;
     }
 }

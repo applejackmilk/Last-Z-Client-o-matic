@@ -1,4 +1,5 @@
 ﻿using Sbroenne.WindowsMcp.Models;
+using System.Diagnostics;
 using WindowsMCP_Integrated.Core;
 using WindowsMCP_Integrated.Core.UI;
 
@@ -27,7 +28,27 @@ namespace WindowsMCP_Integrated.Alliance
                 });
             return clickResult;
         }
+        public async Task<bool> RapidClickHeli(Point? location, int? duration = 5)
+        {
+            var stopwatch = Stopwatch.StartNew();
 
+            Point? point = null;
+            if (!location.HasValue)
+            {
+                point = new Point(UtilityCursorPositions.Center.ClickX, UtilityCursorPositions.Center.ClickY);
+            }
+            else
+            {
+                point = location.Value;
+            }
+
+            while (stopwatch.Elapsed.TotalSeconds < duration.GetValueOrDefault(5))
+            {
+                await _gameService.ClickPositionAndForgetAsync(point, true);
+                Helpers.ThrottleFastClick((int)stopwatch.Elapsed.TotalSeconds);
+            }
+            return true;
+        }
         public async Task CaptureAllianceScreenshot()
         {
             var screenshotTask = await _gameService.GetScreenshotAsync(
