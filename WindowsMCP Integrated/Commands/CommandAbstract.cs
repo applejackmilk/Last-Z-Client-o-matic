@@ -7,14 +7,15 @@ namespace WindowsMCP_Integrated
     {
         public abstract class CommandAbstract : Command
         {
-            protected readonly GameService gameService;
+            protected readonly GameService _gameService;
             protected readonly ILogger _logger;
             protected CommandAbstract(GameService gameService, string name, string? description, ILogger logger) : base(name, description)
             {
-                this.gameService = gameService;
-                this._logger = logger;
+                _gameService = gameService;
+                _logger = logger;
 
-                _logger.LogTrace($"Command {name} initialized with description: {description}");
+                string message = $"Command {name} initialized with description: {description}";
+                _logger.LogTrace(message);
             }
         }
     }

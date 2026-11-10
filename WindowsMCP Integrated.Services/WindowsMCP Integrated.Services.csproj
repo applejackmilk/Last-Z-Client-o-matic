@@ -10,6 +10,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="OCR\FSRCNN_x4.pb" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="OCR\FSRCNN_x4.pb" />
+  </ItemGroup>
+
+  <ItemGroup>
 	<PackageReference Include="NLog.Extensions.Logging" Version="6.2.2" />
 	<PackageReference Include="OpenCvSharp5.Windows" Version="5.0.0.20261012" />
 	<PackageReference Include="TesseractOCR" Version="5.5.2" />
@@ -17,12 +25,6 @@
 
   <ItemGroup>
 	<ProjectReference Include="..\Sbroenne.WindowsMcp\Sbroenne.WindowsMcp.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-	<Compile Include="..\WindowsMCP Integrated\**\*.cs"
-			  Exclude="..\WindowsMCP Integrated\Program.cs;..\WindowsMCP Integrated\Commands\**\*.cs;..\WindowsMCP Integrated\obj\**\*.cs;..\WindowsMCP Integrated\bin\**\*.cs"
-			 Link="%(RecursiveDir)%(Filename)%(Extension)" />
   </ItemGroup>
 
 </Project>

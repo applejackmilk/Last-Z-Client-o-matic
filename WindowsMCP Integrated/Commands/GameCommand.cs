@@ -7,15 +7,15 @@ namespace WindowsMCP_Integrated
     {
         public class GameCommand : CommandAbstract
         {
-            private Command readVSRankingTable = new Command("read-rankings", "Scroll down list");
-            private Option<string?> readTableFilePrefix = new Option<string?>("--file-prefix");
-            private Option<int?> readVSRankingDay = new Option<int?>("--day");
+            private readonly Command _readVSRankingTable = new("read-rankings", "Scroll down list");
+            private readonly Option<string?> _readTableFilePrefix = new("--file-prefix");
+            private readonly Option<int?> _readVSRankingDay = new("--day");
             private async Task<int> DoReadVSRankingTable(ParseResult pr, CancellationToken token)
             {
 
-                if( pr.GetValue(readVSRankingDay) is int dayIndex)
+                if( pr.GetValue(_readVSRankingDay) is int dayIndex)
                 {
-                    var service = new VSDuel.VSService(gameService);
+                    var service = new VSDuel.VSService(_gameService);
                     var result = await service.CaptureDailyVSRanking(dayIndex, token);
                     return result ? 0 : 1;
                 }
@@ -29,17 +29,13 @@ namespace WindowsMCP_Integrated
 
             private void ConfigureReadVSRankingTableCommand()
             {
-                readVSRankingTable.Options.Add(readTableFilePrefix);
-                readVSRankingTable.Options.Add(readVSRankingDay);
-                readVSRankingTable.SetAction(DoReadVSRankingTable);
-                this.Subcommands.Add(readVSRankingTable);
+                _readVSRankingTable.Options.Add(_readTableFilePrefix);
+                _readVSRankingTable.Options.Add(_readVSRankingDay);
+                _readVSRankingTable.SetAction(DoReadVSRankingTable);
+                Subcommands.Add(_readVSRankingTable);
             }
 
-            public GameCommand(GameService gameService, ILogger logger) : base(gameService, "game", "Game operations", logger)
-            {
-                ConfigureReadVSRankingTableCommand();
-
-            }
+            public GameCommand(GameService gameService, ILogger logger) : base(gameService, "game", "Game operations", logger) => ConfigureReadVSRankingTableCommand();
 
             public static void Register(RootCommand root, GameService _gameService, ILogger logger)
             {

@@ -35,8 +35,6 @@ public sealed class ScreenshotService
     {
         ArgumentNullException.ThrowIfNull(request);
 
-        var stopwatch = Stopwatch.StartNew();
-
         try
         {// Handle ListMonitors action
             if (request.Action == ScreenshotAction.ListMonitors)
@@ -66,7 +64,6 @@ public sealed class ScreenshotService
                     $"Unsupported capture target: {request.Target}")
             };
 
-            stopwatch.Stop();
             return result;
         }
         catch (OperationCanceledException)

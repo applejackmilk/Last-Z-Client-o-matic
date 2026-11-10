@@ -33,10 +33,10 @@ namespace WindowsMCP_Integrated.VSDuel
         {
             private static ElementLocation allianceCheckbox = ElementLocation.CreateFromTopLeft(name: "My Alliance", top: 807, left: 888, width: 27, height: 25, container: ContainerName.VSDuel);
             private static ScrollableReadableTable DailyRankingTable = ScrollableReadableTable.Create(name: "Daily Ranking Table"
-                , readRegionX: 740, readRegionY: 360
-                , readRegionWidth: 420, readRegionHeight: 323
+                , readRegionX: 750, readRegionY: 345
+                , readRegionWidth: 420, readRegionHeight: 345
                 , cursorStartX: 1149, cursorStartY: 663
-                , estimatedPartitions: 24);
+                , estimatedPartitions: 3);
             private static ElementLocation exitButtonElement = ElementLocation.Create(name: "Daily Ranking Exit Button", centerX: 1148, centerY: 178, width: 25, height: 25, container: ContainerName.Unknown);
 
             public ScrollableReadableTable DailyRankingsTable => DailyRankingTable;

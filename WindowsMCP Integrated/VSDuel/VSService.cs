@@ -103,7 +103,7 @@ namespace WindowsMCP_Integrated.VSDuel
         public async Task<bool> ClickRankingTypeTab(int index, CancellationToken cancellationToken = default)
         {
             var tabClickLocation = _vsElements.Rankings.GetTabElement(index);
-            var result = await _gameService.ClickPositionAndForgetAsync(
+            var result = await _gameService.GetMouseService().ClickPositionAndForgetAsync(
                 tabClickLocation, cancellationToken);
             return result;
         }
@@ -111,20 +111,20 @@ namespace WindowsMCP_Integrated.VSDuel
         public async Task<bool> ClickRankingDay(int dayIndex, CancellationToken cancellationToken = default)
         {
             var dayButton = _vsElements.Rankings.GetDayElement(dayIndex);
-            var result = await _gameService.ClickPositionAndForgetAsync(
+            var result = await _gameService.GetMouseService().ClickPositionAndForgetAsync(
                 dayButton, cancellationToken);
             return result;
         }
         public async Task<bool> ClickVSRankingsTable(CancellationToken cancellationToken = default)
         {
-            var result = await _gameService.ClickPositionAndForgetAsync(
+            var result = await _gameService.GetMouseService().ClickPositionAndForgetAsync(
                 _vsElements.RankingsButton, cancellationToken);
             return result;
         }
 
         public async Task<bool> ClickAllianceCheckbox(CancellationToken cancellationToken = default)
         {
-            var result = await _gameService.ClickPositionAndForgetAsync(
+            var result = await _gameService.GetMouseService().ClickPositionAndForgetAsync(
                 _vsElements.Rankings.AllianceCheckbox, cancellationToken);
             return result;
         }
@@ -132,7 +132,7 @@ namespace WindowsMCP_Integrated.VSDuel
         public async Task<bool> OpenVSScreen(CancellationToken cancellationToken = default)
         {
 
-            var clickResult = await _gameService.ClickElementAsync(element: GameElements.Main.VSButton
+            var clickResult = await _gameService.GetMouseService().ClickElementAsync(element: GameElements.Main.VSButton
                 , retryTimes: 3, retryDelay: 1000, waitUntil: async () =>
                 {
                     await Task.Delay(3000, cancellationToken);

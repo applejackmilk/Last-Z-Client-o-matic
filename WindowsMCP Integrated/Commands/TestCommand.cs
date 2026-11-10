@@ -1,14 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
-using ModelContextProtocol.Protocol;
-using OpenCvSharp;
-using Sbroenne.WindowsMcp.Input;
-using Sbroenne.WindowsMcp.Tools;
 using System.CommandLine;
-using System.Drawing;
-using System.Windows.Forms;
-using Windows.Globalization;
+using System.Diagnostics;
 using WindowsMCP_Integrated.Core;
-using WindowsMCP_Integrated.Core.UI;
 using WindowsMCP_Integrated.VSDuel;
 
 namespace WindowsMCP_Integrated
@@ -17,100 +10,105 @@ namespace WindowsMCP_Integrated
     {
         public class TestCommand : CommandAbstract
         {
-            private Command test1Command = new Command("test1", "Test command 1");
-            private Argument<int?> test1IntArgument = new Argument<int?>("arg1-int");
+            private readonly Command _test1Command = new("test1", "Test command 1");
+            private readonly Argument<string?> _test1Argument = new("arg1-string");
             private async Task<int> DoTest1(ParseResult parseResult, CancellationToken token)
             {
-                var vsService = new VSService(gameService);
-                var result = await vsService.CaptureDailyVSRanking(null, token);
-                return result ? 0 : 1;
+                var arg1 = parseResult.GetValue(_test1Argument);
+                var vsElements = new VSElements();
+                var result = await _gameService.GetScreenshot(CancellationToken.None);
+
+                var ip = new ImageProcessing();
+                var debugImage = ip.DetectTextDebugImage(arg1, Helpers.ModifyFileName(arg1, "", " debug"));
+                Console.WriteLine($"screenshot output to: {result.FilePath}");
+                Console.WriteLine($"debug output to: {debugImage}");
+                return 0;
             }
 
-            private Command test2Command = new Command("test2", "Test command 2");
-            private Argument<string?> test2Arg1Argument = new Argument<string?>("arg1-string");
-            private Argument<string?> test2Arg2Argument = new Argument<string?>("arg2-string");
+            private readonly Command _test2Command = new("test2", "Test command 2");
+            private readonly Argument<string?> _test2Arg1Argument = new("arg1-string");
+            private readonly Argument<string?> _test2Arg2Argument = new("arg2-string");
             private async Task<int> DoTest2(ParseResult parseResult, CancellationToken token)
             {
-                var input1 = parseResult.GetValue(test2Arg1Argument);
-                var input2 = parseResult.GetValue(test2Arg2Argument);
+                var input1 = parseResult.GetValue(_test2Arg1Argument);
+                var input2 = parseResult.GetValue(_test2Arg2Argument);
                 var vsElements = new VSDuel.VSElements();
-                Rect rect = new Rect(vsElements.Rankings.AllianceCheckbox.X, vsElements.Rankings.AllianceCheckbox.Y, vsElements.Rankings.AllianceCheckbox.Size.Width, vsElements.Rankings.AllianceCheckbox.Size.Height);
+                OpenCvSharp.Rect rect = new(vsElements.Rankings.AllianceCheckbox.X, vsElements.Rankings.AllianceCheckbox.Y, vsElements.Rankings.AllianceCheckbox.Size.Width, vsElements.Rankings.AllianceCheckbox.Size.Height);
                 ImageProcessing.ExtractRegionFromImageFile(input1, input2, rect);
                 return 0;
             }
 
-            private Command readHeaderText = new Command("read-header-text", "Read the overlay header text");
+            private readonly Command _readHeaderText = new("read-header-text", "Read the overlay header text");
             private async Task<int> DoReadHeaderText(ParseResult parseResult, CancellationToken token)
             {
-                var result = await gameService.ReadHeaderText();
+                var result = await _gameService.ReadHeaderText();
                 return result ? 1 : 0;
 
             }
-            private Argument<int> screenshotX = new Argument<int>("--x");
-            private Argument<int> screenshotY = new Argument<int>("--y");
-            private Argument<int> screenshotWidth = new Argument<int>("--width");
-            private Argument<int> screenshotHeight = new Argument<int>("--height");
-            private Command screenshot = new Command("screenshot", "Take a screenshot based on params provided");
+            private readonly Argument<int> _screenshotX = new("--x");
+            private readonly Argument<int> _screenshotY = new("--y");
+            private readonly Argument<int> _screenshotWidth = new("--width");
+            private readonly Argument<int> _screenshotHeight = new("--height");
+            private readonly Command _screenshot = new("screenshot", "Take a screenshot based on params provided");
 
             private async Task<int> DoScreenshot(ParseResult parseResult, CancellationToken token)
             {
-                var x = parseResult.GetValue(screenshotX);
-                var y = parseResult.GetValue(screenshotY);
-                var width = parseResult.GetValue(screenshotWidth);
-                var height = parseResult.GetValue(screenshotHeight);
+                var x = parseResult.GetValue(_screenshotX);
+                var y = parseResult.GetValue(_screenshotY);
+                var width = parseResult.GetValue(_screenshotWidth);
+                var height = parseResult.GetValue(_screenshotHeight);
 
-                var result = await gameService.GetScreenshotAsync("Test Screenshot", x, y, width, height);
-                if (result.Success && !String.IsNullOrEmpty(result.FilePath))
+                var result = await _gameService.GetScreenshotAsync("Test Screenshot", x, y, width, height);
+                if (!(!result.Success || string.IsNullOrEmpty(result.FilePath)))
                 {
-                    gameService.PreprocessImageForReading(result.FilePath);
+                    _gameService.PreprocessImageForReading(result.FilePath);
 
                 }
                 return result.Success ? 1 : 0;
 
             }
-            private Option<string?> readTableFilePrefix = new Option<string?>("--file-prefix");
+            private readonly Option<string?> _readTableFilePrefix = new("--file-prefix");
 
-            private Command readSvSPointsRanking = new Command("read-svs-points-rankings", "Scroll down list");
+            private readonly Command _readSvSPointsRanking = new("read-svs-points-rankings", "Scroll down list");
             private async Task<int> DoReadSvSPointsRanking(ParseResult pr, CancellationToken token)
             {
-                gameService.IncludeTimestampInScreenshotFile = false;
-
-                var result = await gameService.ScrollAndScreenshotTableAsync(GameElements.SvSPointsRankingTable, $"{(pr.GetValue(readTableFilePrefix) ?? "SvS Points")} Table");
+                _gameService.IncludeTimestampInScreenshotFile = false;
+                _ = await _gameService.ScrollAndScreenshotTableAsync(GameElements.SvSPointsRankingTable, $"{(pr.GetValue(_readTableFilePrefix) ?? "SvS Points")} Table", token);
                 return 0;
 
             }
 
-            Command testGameCommand = new Command("game", "Game-specific test commands");
-            private ImageProcessing _imageProcessing;
+            private readonly Command _testGameCommand = new("game", "Game-specific test commands");
+            private readonly ImageProcessing _imageProcessing;
 
             public TestCommand(GameService gameService, ILogger logger) : base(gameService, "test", "Test command for various operations", logger)
             {
-                _imageProcessing = new ImageProcessing(c => logger.LogDebug(c));
+                _imageProcessing = new ImageProcessing();
 
-                test1Command.Arguments.Add(test1IntArgument);
-                test1Command.SetAction(DoTest1);
-                testGameCommand.Subcommands.Add(test1Command);
+                _test1Command.Arguments.Add(_test1Argument);
+                _test1Command.SetAction(DoTest1);
+                _testGameCommand.Subcommands.Add(_test1Command);
 
-                test2Command.Arguments.Add(test2Arg1Argument);
-                test2Command.Arguments.Add(test2Arg2Argument);
-                test2Command.SetAction(DoTest2);
-                testGameCommand.Subcommands.Add(test2Command);
+                _test2Command.Arguments.Add(_test2Arg1Argument);
+                _test2Command.Arguments.Add(_test2Arg2Argument);
+                _test2Command.SetAction(DoTest2);
+                _testGameCommand.Subcommands.Add(_test2Command);
 
-                readHeaderText.SetAction(DoReadHeaderText);
-                testGameCommand.Subcommands.Add(readHeaderText);
+                _readHeaderText.SetAction(DoReadHeaderText);
+                _testGameCommand.Subcommands.Add(_readHeaderText);
 
-                screenshot.Arguments.Add(screenshotX);
-                screenshot.Arguments.Add(screenshotY);
-                screenshot.Arguments.Add(screenshotWidth);
-                screenshot.Arguments.Add(screenshotHeight);
-                screenshot.SetAction(DoScreenshot);
-                testGameCommand.Subcommands.Add(screenshot);
+                _screenshot.Arguments.Add(_screenshotX);
+                _screenshot.Arguments.Add(_screenshotY);
+                _screenshot.Arguments.Add(_screenshotWidth);
+                _screenshot.Arguments.Add(_screenshotHeight);
+                _screenshot.SetAction(DoScreenshot);
+                _testGameCommand.Subcommands.Add(_screenshot);
 
-                readSvSPointsRanking.SetAction(DoReadSvSPointsRanking);
-                readSvSPointsRanking.Options.Add(readTableFilePrefix);
-                testGameCommand.Subcommands.Add(readSvSPointsRanking);
+                _readSvSPointsRanking.SetAction(DoReadSvSPointsRanking);
+                _readSvSPointsRanking.Options.Add(_readTableFilePrefix);
+                _testGameCommand.Subcommands.Add(_readSvSPointsRanking);
 
-                this.Subcommands.Add(testGameCommand);
+                Subcommands.Add(_testGameCommand);
             }
 
             public static void Register(RootCommand root, GameService _gameService, ILogger logger)

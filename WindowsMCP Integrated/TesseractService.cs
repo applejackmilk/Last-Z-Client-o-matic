@@ -6,8 +6,6 @@ using System.Drawing.Drawing2D;
 using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Windows.Documents;
-using System.Windows.Forms;
 using TesseractOCR;
 using TesseractOCR.Enums;
 using NLog;
@@ -191,7 +189,7 @@ namespace WindowsMCP_Integrated
 
             // x range is relative to a 420-px-wide image; y range is relative to the box's top edge
             public static readonly Field Rank = new("rank", 28, 90, 22, 58, false, PageSegMode.SingleWord, "0123456789");
-            public static readonly Field User = new("user", 158, 290, 6, 34, true, PageSegMode.SingleLine, "");
+            public static readonly Field User = new("user", 151, 290, 6, 34, true, PageSegMode.SingleLine, "");
             public static readonly Field Ally = new("ally", 158, 290, 38, 64, false, PageSegMode.SingleLine, "");
             public static readonly Field Score = new("score", 290, 412, 14, 62, true, PageSegMode.SingleLine, "0123456789,");
         }

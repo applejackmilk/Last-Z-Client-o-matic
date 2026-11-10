@@ -1,3 +1,4 @@
+using NLog;
 using OpenCvSharp;
 using System.Diagnostics.Metrics;
 using System.Globalization;
@@ -9,15 +10,14 @@ namespace WindowsMCP_Integrated
     internal sealed class ImageProcessing : IDisposable
     {
         
-        private readonly Action<string>? _debugCallback;
+        private readonly ILogger _logger = NLog.LogManager.GetCurrentClassLogger();
         private readonly List<ImageProcessingStage> _stages = [];
         private Mat? _image;
         private Mat? _originalImage;
         private string? _originalFilePath;
         public static bool? SaveStageFiles;
-        public ImageProcessing(Action<string>? debugCallback = null)
+        public ImageProcessing()
         {
-            _debugCallback = debugCallback;
         }
 
         public static string PostProcessingOutputFilePath { get; set; } = Path.Combine(AppContext.BaseDirectory, "ImageProcessingOutput");
@@ -78,7 +78,7 @@ namespace WindowsMCP_Integrated
                 catch (Exception)
                 {
 
-                    Console.WriteLine($"Normalization failed for color conversion: {conversionCodes.ElementAt(i)}. Continuing with next conversion.");
+                    _logger.Error($"Normalization failed for color conversion: {conversionCodes.ElementAt(i)}. Continuing with next conversion.");
                 }
             }
             originalImage?.Dispose();
@@ -310,7 +310,7 @@ namespace WindowsMCP_Integrated
 
         private void LogDebug(string message, params object?[] parameters)
         {
-            _debugCallback?.Invoke(string.Format(CultureInfo.InvariantCulture, message, parameters));
+            _logger.Debug(string.Format(CultureInfo.InvariantCulture, message, parameters));
         }
 
         private Mat RequireImage() => _image ?? throw new InvalidOperationException("ReadFile must be called before processing an image.");

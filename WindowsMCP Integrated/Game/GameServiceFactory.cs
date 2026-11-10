@@ -30,12 +30,13 @@ public static class GameServiceFactory
             monitorService,
             secureDesktopDetector);
         var mouseInputService = new MouseInputService();
-        var tesseractService = new TesseractService(imageProcessor, tesseractDataPath);
+        var mouseService = new MouseService(mouseInputService);
+        var tesseractService = new TesseractService(tesseractDataPath);
 
         ImageProcessing.SetConfiguration(screenshotOutputPath);
         ImageProcessing.StageCompletionCallback = filePath => tesseractService.ExtractTextFromImage(filePath);
 
-        var gameWindow = await windowService.FindWindowAsync(title: "LastZ", processName: "Survival");
+        var gameWindow = await windowService.FindWindowAsync(title: "LastZ", processName: "Survival", cancellationToken: cancellationToken);
         cancellationToken.ThrowIfCancellationRequested();
         if (!gameWindow.Success || gameWindow.Count != 1)
         {
@@ -45,7 +46,7 @@ public static class GameServiceFactory
         var gameService = new GameService(
             windowService,
             screenshotService,
-            mouseInputService,
+            mouseService,
             tesseractService,
             gameWindow.Windows[0])
         {

@@ -57,7 +57,7 @@ namespace WindowsMCP_Integrated
 
                 if (times == 1 && point.HasValue)
                 {
-                    await gameService.ClickPositionAndForgetAsync(point.Value.X, point.Value.Y);
+                    await _gameService.GetMouseService().ClickPositionAndForgetAsync(point.Value.X, point.Value.Y);
                     return 0;
                 }
 
@@ -65,7 +65,7 @@ namespace WindowsMCP_Integrated
                 var remaining = times;
                 while (stopwatch.Elapsed.TotalSeconds < seconds || remaining-- >= 0)
                 {
-                    await gameService.ClickPositionAndForgetAsync(point, times > 1 || seconds > 0);
+                    await _gameService.GetMouseService().ClickPositionAndForgetAsync(point, times > 1 || seconds > 0);
                     Helpers.ThrottleFastClick((int)stopwatch.Elapsed.TotalSeconds);
                 }
 
@@ -114,42 +114,13 @@ namespace WindowsMCP_Integrated
                 {
                     var pos = MouseControlTool.GetCurrentPosition();
                     sequence.Add(new(pos.Position[0], pos.Position[1]));
-                    _logger.LogDebug("Recorded Mouse Position");
+                    _logger.LogInformation("Recorded Mouse Position");
                 };
                 recordPositionHotKeyManager.ExitRequested += () =>
                 {
-                    Console.WriteLine("Exit requested.");
+                    _logger.LogInformation("Exit requested.");
                     _exitRequested = true;
                 };
-                //using var listener = new MouseListener();
-
-                //using var listenerHotKeyManager =
-                //    new GlobalHotKeyManager(
-                //        HotKeyModifiers.Control | HotKeyModifiers.Alt,
-                //        (uint)'L');
-
-                //listener.ActionMade += (x, y) =>
-                //{
-                //        sequence.Add(new Point(x, y));
-                //};
-
-                //listenerHotKeyManager.HotKeyPressed += () =>
-                //{
-                //    if (listener.IsListening)
-                //    {
-                //        listener.Stop();
-                //        _logger.LogDebug("Listening OFF. stop now?");
-                //        if(Console.ReadLine() == "y")
-                //        {
-                //            _exitRequested = false;
-                //        }
-                //    }
-                //    else
-                //    {
-                //        listener.Start();
-                //        _logger.LogDebug("Listening ON");
-                //    }
-                //};
 
                 Console.CancelKeyPress += (_, e) =>
                 {
@@ -160,7 +131,8 @@ namespace WindowsMCP_Integrated
                 recordPositionHotKeyManager.Start();
                 //listenerHotKeyManager.Start();
 
-                _logger.LogDebug("Ctrl+Alt+R records a mouse position.");
+                _logger.LogDebug("Ctrl+R records a mouse position.");
+                _logger.LogDebug("Ctrl+X to finish.");
 
                 recordPositionHotKeyManager.RunMessageLoop(() => _exitRequested || getKeyAvailable());
                 //listenerHotKeyManager.RunMessageLoop(() => _exitRequested);
@@ -178,7 +150,7 @@ namespace WindowsMCP_Integrated
                     for (int i = 0; i < sequence.Count; i++)
                     {
                         var currentValue = String.Format(createElementTemplate( templateType.Center), sequence[i].X, sequence[i].Y, 25, 25);
-                        Console.WriteLine(currentValue);
+                        _logger.LogDebug(currentValue);
                     }
                 }
                 else
@@ -186,7 +158,7 @@ namespace WindowsMCP_Integrated
                     for (int i = 0; i < sequence.Count; i += 2)
                     {
                         var currentValue = String.Format(createElementTemplate( templateType.TopLeft), sequence[i].X, sequence[i].Y, sequence[i - 1].X, sequence[i - 1].Y);
-                        Console.WriteLine(currentValue);
+                        _logger.LogDebug(currentValue);
                     }
                 }
 
@@ -247,7 +219,7 @@ namespace WindowsMCP_Integrated
                     }
                 }
 
-                var result = await gameService.SetCursorPositionAsync(x, y, token);
+                var result = await _gameService.GetMouseService().SetCursorPositionAsync(x, y, token);
 
                 return 0;
             }

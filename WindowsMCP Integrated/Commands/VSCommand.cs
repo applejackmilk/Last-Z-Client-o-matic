@@ -14,7 +14,7 @@ namespace WindowsMCP_Integrated
             private async Task<int> DoRankingCapture(ParseResult parseResult, CancellationToken token)
             {
                 int? dayIndex = parseResult.GetValue(rankingOption);
-                var vsService = new VSDuel.VSService(gameService);
+                var vsService = new VSDuel.VSService(_gameService);
                 var result = await vsService.CaptureDailyVSRanking(dayIndex, token);
                 return result ? 0 : 1;
             }
@@ -24,9 +24,9 @@ namespace WindowsMCP_Integrated
             private Command readSvSPointsRanking = new Command("read-svs-points-rankings", "Scroll down list");
             private async Task<int> DoReadSvSPointsRanking(ParseResult pr, CancellationToken token)
             {
-                gameService.IncludeTimestampInScreenshotFile = false;
+                _gameService.IncludeTimestampInScreenshotFile = false;
 
-                var result = await gameService.ScrollAndScreenshotTableAsync(GameElements.SvSPointsRankingTable, $"{(pr.GetValue(readTableFilePrefix) ?? "SvS Points")} Table");
+                var result = await _gameService.ScrollAndScreenshotTableAsync(GameElements.SvSPointsRankingTable, $"{(pr.GetValue(readTableFilePrefix) ?? "SvS Points")} Table");
                 return 0;
 
             }

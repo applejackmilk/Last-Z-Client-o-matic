@@ -30,10 +30,16 @@
         {
             tabControl1 = new TabControl();
             tabPage1 = new TabPage();
+            button5 = new Button();
+            textBox1 = new TextBox();
+            button3 = new Button();
+            button2 = new Button();
             numericUpDown1 = new NumericUpDown();
             button1 = new Button();
             tabPage2 = new TabPage();
-            button2 = new Button();
+            folderBrowserDialog1 = new FolderBrowserDialog();
+            button4 = new Button();
+            openFileDialog1 = new OpenFileDialog();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numericUpDown1).BeginInit();
@@ -51,6 +57,9 @@
             // 
             // tabPage1
             // 
+            tabPage1.Controls.Add(button5);
+            tabPage1.Controls.Add(textBox1);
+            tabPage1.Controls.Add(button3);
             tabPage1.Controls.Add(button2);
             tabPage1.Controls.Add(numericUpDown1);
             tabPage1.Controls.Add(button1);
@@ -61,6 +70,44 @@
             tabPage1.TabIndex = 0;
             tabPage1.Text = "tabPage1";
             tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // button5
+            // 
+            button5.Location = new Point(142, 35);
+            button5.Name = "button5";
+            button5.Size = new Size(75, 23);
+            button5.TabIndex = 2;
+            button5.Text = "Process Image";
+            button5.UseVisualStyleBackColor = true;
+            button5.Click += button5_Click;
+            // 
+            // textBox1
+            // 
+            textBox1.Location = new Point(8, 63);
+            textBox1.Multiline = true;
+            textBox1.Name = "textBox1";
+            textBox1.Size = new Size(361, 156);
+            textBox1.TabIndex = 4;
+            // 
+            // button3
+            // 
+            button3.Location = new Point(170, 8);
+            button3.Name = "button3";
+            button3.Size = new Size(75, 23);
+            button3.TabIndex = 3;
+            button3.Text = "Bounties";
+            button3.UseVisualStyleBackColor = true;
+            button3.Click += button3_Click;
+            // 
+            // button2
+            // 
+            button2.Location = new Point(89, 8);
+            button2.Name = "button2";
+            button2.Size = new Size(75, 23);
+            button2.TabIndex = 2;
+            button2.Text = "The Heli!";
+            button2.UseVisualStyleBackColor = true;
+            button2.Click += button2_Click;
             // 
             // numericUpDown1
             // 
@@ -75,7 +122,7 @@
             button1.Name = "button1";
             button1.Size = new Size(75, 23);
             button1.TabIndex = 0;
-            button1.Text = "button1";
+            button1.Text = "Capture VS";
             button1.UseVisualStyleBackColor = true;
             button1.Click += button1_Click;
             // 
@@ -89,26 +136,39 @@
             tabPage2.Text = "tabPage2";
             tabPage2.UseVisualStyleBackColor = true;
             // 
-            // button2
+            // folderBrowserDialog1
             // 
-            button2.Location = new Point(89, 8);
-            button2.Name = "button2";
-            button2.Size = new Size(75, 23);
-            button2.TabIndex = 2;
-            button2.Text = "The Heli!";
-            button2.UseVisualStyleBackColor = true;
-            button2.Click += button2_Click;
+            folderBrowserDialog1.InitialDirectory = "D:\\Development\\WindowsMCP Integrated\\Screenshots";
+            // 
+            // button4
+            // 
+            button4.Location = new Point(4, 259);
+            button4.Name = "button4";
+            button4.Size = new Size(217, 23);
+            button4.TabIndex = 1;
+            button4.Text = "Set Screenshot Output Path";
+            button4.UseVisualStyleBackColor = true;
+            button4.Click += button4_Click;
+            // 
+            // openFileDialog1
+            // 
+            openFileDialog1.DefaultExt = "png";
+            openFileDialog1.FileName = "openFileDialog1";
+            openFileDialog1.Filter = "PNG Files|*.png";
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(399, 303);
+            Controls.Add(button4);
             Controls.Add(tabControl1);
             Name = "Form1";
             Text = "Form1";
+            Load += Form1_Load;
             tabControl1.ResumeLayout(false);
             tabPage1.ResumeLayout(false);
+            tabPage1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)numericUpDown1).EndInit();
             ResumeLayout(false);
         }
@@ -121,5 +181,11 @@
         private TabPage tabPage2;
         private NumericUpDown numericUpDown1;
         private Button button2;
+        private Button button3;
+        private TextBox textBox1;
+        private FolderBrowserDialog folderBrowserDialog1;
+        private Button button4;
+        private Button button5;
+        private OpenFileDialog openFileDialog1;
     }
 }

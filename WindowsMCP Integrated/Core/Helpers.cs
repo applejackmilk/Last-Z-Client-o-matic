@@ -1,6 +1,7 @@
-﻿using System.Diagnostics;
+﻿using NLog;
+using System.Diagnostics;
+using System.Windows;
 using DrawingPoint = System.Drawing.Point;
-using NLog;
 
 namespace WindowsMCP_Integrated.Core
 {
@@ -39,7 +40,7 @@ namespace WindowsMCP_Integrated.Core
 
         internal static void ThrottleFastClick(int max)
         {
-            var tmpRndTime = 15 + Random.Shared.Next(0, 200 / (1 + Math.Max(1, max)));
+            var tmpRndTime = Random.Shared.Next(150 - Random.Shared.Next(10, 20), 999);
             ThrottleThread(tmpRndTime);
         }
 
